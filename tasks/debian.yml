@@ -42,7 +42,7 @@
   when: uninstall is defined and uninstall
 
 - name: configuring network interfaces (/etc/network/interfaces)
-  template: src=etc/network/interfaces.j2 dest=/etc/network/interfaces owner=root group=root mode=0644 backup=yes
+  template: src=etc/network/interfaces.d/interfaces.j2 dest=/etc/network/interfaces.d/ifcfg-{{ item.name }} owner=root group=root mode=0644
   register: interfaces_configured
   tags:
     - config_interfaces

@@ -46,13 +46,14 @@ uninstall: false  #defines is OVS should be uninstalled and OVS Bridges destroye
 Dependencies
 ------------
 
-None
+Recommended to use Ansible Galaxy role mrlesmithjr.config-interfaces along with this role to manage non OVS interfaces.
 
 Example Playbook
 ----------------
 
     - hosts: servers
       roles:
+         - { role: mrlesmithjr.config-interfaces }
          - { role: mrlesmithjr.openvswitch }
 
 License
