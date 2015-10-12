@@ -6,6 +6,7 @@ apt_repos:
   - ppa:tomeichhorn/ovs  #openvswitch repo
 ovs_bridges:
   - name: ext-br  #defines the name of the ovs bridge to create
+    add_interfaces: true
     interfaces:
       - em1
     state: present  #defines if the bridge should exist or not
@@ -19,8 +20,9 @@ ovs_bridges:
     wpa_ssid: wireless  #defines the wireless SSID to connect to
     wpa_psk: wpapassword  #defines the wireless key
   - name: int-br
+    add_interfaces: false
     interfaces:
-      - None  #define as None if the desire is to not have nay interfaces added.
+      - None  #define as None and set add_interfaces to false if the desire is to not have nay interfaces added.
     state: present
     config_etc_interfaces: true
     comment: internal network

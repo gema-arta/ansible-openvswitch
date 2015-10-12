@@ -21,7 +21,7 @@
   with_subelements:
     - ovs_bridges
     - interfaces
-  when: (item[1] is defined and item[1] != "None" and item[0].state != "absent") and (uninstall is defined and not uninstall)
+  when: (item[0].add_interfaces is defined and item[0].add_interfaces) and (item[1] is defined and and item[0].state != "absent") and (uninstall is defined and not uninstall)
 
 - name: checking for ovs installed
   stat: path=/usr/bin/ovs-vsctl

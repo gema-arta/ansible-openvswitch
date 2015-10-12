@@ -6,7 +6,7 @@ iface lo inet loopback
 {%   for item in ovs_bridges %}
 {%     if item.state == "present" %}
 {%       if item.config_etc_interfaces is defined and item.config_etc_interfaces %}
-{%         if item.interfaces is defined %}
+{%         if item.interfaces is defined and (item.add_interfaces is defined and item.add_interfaces) %}
 {%           for int in item.interfaces %}
 {%             if int != "None" %}
 {%               if item.comment is defined %}
@@ -41,7 +41,7 @@ netmask {{ item.netmask }}
 gateway {{ item.gateway }}
 {%           endif %}
 ovs_type OVSBridge
-{%           if item.interfaces is defined %}
+{%           if item.interfaces is defined and (item.add_interfaces is defined and item.add_interfaces) %}
 ovs_ports {% for int in item.interfaces %}{% if int != "None" %}{{ int }}{% if not loop.last %} {% endif %}{% endif %}{% endfor %}
 
 {%           endif %}
@@ -49,7 +49,7 @@ ovs_ports {% for int in item.interfaces %}{% if int != "None" %}{{ int }}{% if n
 {%       endif %}
 {%       if item.method == "DHCP" or item.method == "dhcp" %}
 ovs_type OVSBridge
-{%         if item.interfaces is defined %}
+{%         if item.interfaces is defined and (item.add_interfaces is defined and item.add_interfaces) %}
 ovs_ports {% for int in item.interfaces %}{% if int != "None" %}{{ int }}{% if not loop.last %} {% endif %}{% endif %}{% endfor %}
 
 {%         endif %}
