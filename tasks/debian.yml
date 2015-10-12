@@ -42,13 +42,19 @@
   when: uninstall is defined and uninstall
 
 - name: configuring network interfaces (/etc/network/interfaces)
-  template: src=etc/network/interfaces.d/interfaces.j2 dest=/etc/network/interfaces.d/ifcfg-{{ item.name }} owner=root group=root mode=0644
+  template: src=etc/network/interfaces.j2 dest=/etc/network/interfaces owner=root group=root mode=0644
   register: interfaces_configured
   tags:
     - config_interfaces
-  with_items: ovs_bridges
 
 - name: bringing up interfaces
+  shell: "ifdown {{ item.name }} && ifup {{ item.name }}"
+  tags:
+    - config_interfaces
+  with_items: interfaces
+  when: interfaces_configured.changed and (item.configure is defined and item.configure)
+
+- name: bringing up OVS interfaces
   shell: "ifdown {{ item.name }} && ifup {{ item.name }}"
   tags:
     - config_interfaces

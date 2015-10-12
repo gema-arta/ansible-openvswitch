@@ -18,9 +18,34 @@ add_repos: false  #defines if apt repos should be added for obtaining newer code
 apt_repos:
   - ppa:project-calico/kilo  #openstack kilo repo
   - ppa:tomeichhorn/ovs  #openvswitch repo
+interfaces:  #define interfaces here to be configured that are not part of ovs_bridges
+  - name: eth0
+    address:
+    configure: true
+    gateway:
+    method: dhcp
+    netmask:
+    netmask_cidr:
+    network:
+    wireless_network: false
+    wpa_ssid:
+    wpa_psk:
+  - name: wlan0
+    address:
+    configure: false
+    gateway:
+    method: dhcp
+    netmask:
+    netmask_cidr:
+    network:
+    wireless_network: true
+    wpa_ssid: wirelessssid
+    wpa_psk: wirelesskey
 ovs_bridges:
   - name: ext-br  #defines the name of the ovs bridge to create
-    int: em1  #defines the interface(s) to add to bridge
+    add_interfaces: true
+    interfaces:
+      - em1
     state: present  #defines if the bridge should exist or not
     config_etc_interfaces: true  #defines if /etc/network/interfaces should be updated to include the configuration..config between reboots
     comment: external network  #defines the comment if desired to add to /etc/network/interfaces
@@ -32,7 +57,9 @@ ovs_bridges:
     wpa_ssid: wireless  #defines the wireless SSID to connect to
     wpa_psk: wpapassword  #defines the wireless key
   - name: int-br
-#    int: eth1  #commented out to define an OVS Bridge w/out any interface(s)
+    add_interfaces: false
+    interfaces:
+      - None  #define as None and set add_interfaces to false if the desire is to not have nay interfaces added.
     state: present
     config_etc_interfaces: true
     comment: internal network
@@ -53,7 +80,6 @@ Example Playbook
 
     - hosts: servers
       roles:
-         - { role: mrlesmithjr.config-interfaces }
          - { role: mrlesmithjr.openvswitch }
 
 License
