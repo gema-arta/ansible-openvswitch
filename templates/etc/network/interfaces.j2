@@ -8,18 +8,20 @@ iface lo inet loopback
 {%       if item.config_etc_interfaces is defined and item.config_etc_interfaces %}
 {%         if item.interfaces is defined %}
 {%           for int in item.interfaces %}
-{%             if item.comment is defined %}
+{%             if int != "None" %}
+{%               if item.comment is defined %}
 
 # {{ item.comment }}
-{%             endif %}
+{%               endif %}
 # auto {{ int }}
 allow-{{ item.name }} {{ int }}
 iface {{ int }} inet manual
 ovs_bridge {{ item.name }}
 ovs_type OVSPort
-{%             if item.wireless_network is defined and item.wireless_network %}
+{%               if item.wireless_network is defined and item.wireless_network %}
 wpa-ssid {{ item.wpa_ssid }}
 wpa-psk {{ item.wpa_psk }}
+{%               endif %}
 {%             endif %}
 {%           endfor %}
 {%         endif %}
@@ -40,7 +42,7 @@ gateway {{ item.gateway }}
 {%           endif %}
 ovs_type OVSBridge
 {%           if item.interfaces is defined %}
-ovs_ports {% for int in item.interfaces %}{{ int }}{% if not loop.last %} {% endif %}{% endfor %}
+ovs_ports {% for int in item.interfaces %}{% if int != "None" %}{{ int }}{% if not loop.last %} {% endif %}{% endif %}{% endfor %}
 
 {%           endif %}
 {%         endif %}
@@ -48,7 +50,7 @@ ovs_ports {% for int in item.interfaces %}{{ int }}{% if not loop.last %} {% end
 {%       if item.method == "DHCP" or item.method == "dhcp" %}
 ovs_type OVSBridge
 {%         if item.interfaces is defined %}
-ovs_ports {% for int in item.interfaces %}{{ int }}{% if not loop.last %} {% endif %}{% endfor %}
+ovs_ports {% for int in item.interfaces %}{% if int != "None" %}{{ int }}{% if not loop.last %} {% endif %}{% endif %}{% endfor %}
 
 {%         endif %}
 {%       endif %}

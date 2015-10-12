@@ -19,8 +19,8 @@ ovs_bridges:
     wpa_ssid: wireless  #defines the wireless SSID to connect to
     wpa_psk: wpapassword  #defines the wireless key
   - name: int-br
-#    interfaces:
-#      - eth1
+    interfaces:
+      - None  #define as None if the desire is to not have nay interfaces added.
     state: present
     config_etc_interfaces: true
     comment: internal network
