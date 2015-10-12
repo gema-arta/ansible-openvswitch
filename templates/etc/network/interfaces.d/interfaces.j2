@@ -1,7 +1,4 @@
-# The loopback network interface
-auto lo
-iface lo inet loopback
-
+# {{ ansible_managed }}
 {% if ovs_bridges is defined %}
 {%   if item.state == "present" %}
 {%     if item.config_etc_interfaces is defined and item.config_etc_interfaces %}
