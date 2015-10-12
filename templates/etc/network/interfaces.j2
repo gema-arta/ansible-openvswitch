@@ -38,17 +38,19 @@ netmask {{ item.netmask }}
 {%           if item.gateway is defined %}
 gateway {{ item.gateway }}
 {%           endif %}
+ovs_type OVSBridge
 {%           if item.interfaces is defined %}
 ovs_ports {% for int in item.interfaces %}{{ int }}{% if not loop.last %} {% endif %}{% endfor %}
+
 {%           endif %}
-ovs_type OVSBridge
 {%         endif %}
 {%       endif %}
 {%       if item.method == "DHCP" or item.method == "dhcp" %}
+ovs_type OVSBridge
 {%         if item.interfaces is defined %}
 ovs_ports {% for int in item.interfaces %}{{ int }}{% if not loop.last %} {% endif %}{% endfor %}
+
 {%         endif %}
-ovs_type OVSBridge
 {%       endif %}
 {%     endif %}
 {%   endfor %}
