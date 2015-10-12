@@ -20,17 +20,17 @@
   openvswitch_port: bridge={{ item.name }} port={{ item.int }} state={{ item.state }}
   with_items: ovs_bridges
   when: (item.int is defined and item.state != "absent") and (uninstall is defined and not uninstall)
-      
+
 - name: checking for ovs installed
   stat: path=/usr/bin/ovs-vsctl
   register: ovs_installed_check
   when: uninstall is defined and uninstall
-      
+
 - name: removing ovs bridges
   openvswitch_bridge: bridge={{ item.name }} state=absent
   with_items: ovs_bridges
   when: (uninstall is defined and uninstall) and ovs_installed_check.stat.exists
-      
+
 - name: removing ovs packages
   apt: name={{ item }} state=absent purge=yes
   with_items:
@@ -38,13 +38,13 @@
     - openvswitch-controller
     - openvswitch-switch
   when: uninstall is defined and uninstall
-    
+
 - name: configuring network interfaces (/etc/network/interfaces)
   template: src=templates/etc/network/interfaces.j2 dest=/etc/network/interfaces owner=root group=root mode=0644 backup=yes
   register: interfaces_configured
   tags:
     - config_interfaces
-      
+
 - name: bringing up interfaces
   shell: "ifdown {{ item.name }} && ifup {{ item.name }}"
   tags:
