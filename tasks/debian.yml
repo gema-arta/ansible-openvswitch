@@ -46,7 +46,7 @@
   register: interfaces_configured
   tags:
     - config_interfaces
-  with_items: config_interfaces
+  with_items: ovs_bridges
 
 - name: bringing up interfaces
   shell: "ifdown {{ item.name }} && ifup {{ item.name }}"
