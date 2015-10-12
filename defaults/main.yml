@@ -1,0 +1,29 @@
+---
+# defaults file for ansible-openvswitch
+add_repos: false
+apt_repos:
+  - ppa:project-calico/kilo  #openstack kilo repo
+  - ppa:tomeichhorn/ovs  #openvswitch repo
+ovs_bridges:
+  - name: ext-br
+    int: em1
+    state: present
+    config_etc_interfaces: true
+    comment: external network
+    method: dhcp
+    address:
+    netmask:
+    gateway:
+    wireless_network: false
+    wpa_ssid: wireless
+    wpa_psk: wpapassword
+  - name: int-br
+#    int: eth1
+    state: present
+    config_etc_interfaces: true
+    comment: internal network
+    method: static
+    address: 192.168.203.69
+    netmask: 255.255.255.0
+#    gateway: 172.16.24.1
+uninstall: false
